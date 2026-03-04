@@ -1,0 +1,151 @@
+﻿:root {
+    --bg-color: #f8fafc;
+    --border-color: #e2e8f0;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --primary-color: #3b82f6;
+    --primary-light: #eff6ff;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Лоадер */
+.loader-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--border-color);
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* Основний контейнер */
+.app-container {
+    max-width: 1000px;
+    width: 100%;
+}
+
+/* Панель керування */
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: white;
+    padding: 15px 20px;
+    border-radius: 24px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.delay-badge {
+    background-color: #f1f5f9;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+/* Макет галереї та прев'ю */
+.main-content {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    flex: 1;
+}
+
+.thumb {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 2px solid transparent;
+}
+
+.thumb:hover, .thumb.active {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-color: var(--primary-color);
+}
+
+/* Зона прев'ю */
+.preview-panel {
+    flex: 1;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.preview-header h3 { margin: 0 0 5px 0; }
+.preview-header p { margin: 0 0 15px 0; font-size: 14px; color: var(--text-muted); }
+
+.preview-image-container {
+    width: 100%;
+    aspect-ratio: 4/3;
+    background-color: var(--bg-color);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+#previewImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.placeholder { color: var(--text-muted); }
+
+.preview-footer {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.badge {
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-family: monospace;
+    color: var(--text-main);
+}

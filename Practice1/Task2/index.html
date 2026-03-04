@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipeline: Promise vs Async/Await</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="controls">
+        <button id="btnPromise">Запустити через Promise.then()</button>
+        <button id="btnAsync">Запустити через async/await</button>
+        <button id="btnReset">Reset</button>
+        <div class="prob-wrapper">
+            <label for="errorProb">Імовірність помилки:</label>
+            <input type="number" id="errorProb" step="0.1" min="0" max="1" value="0.2">
+        </div>
+    </div>
+
+    <div class="pipeline">
+        <div class="step" id="step1">
+            <div class="step-header">
+                <h4>Крок 1: Нормалізація</h4>
+                <span class="badge waiting" id="badge1">waiting</span>
+            </div>
+            <div class="step-result">Результат кроку: <span class="result-val" id="res1">-</span></div>
+        </div>
+
+        <div class="step" id="step2">
+            <div class="step-header">
+                <h4>Крок 2: Перетворення</h4>
+                <span class="badge waiting" id="badge2">waiting</span>
+            </div>
+            <div class="step-result">Результат кроку: <span class="result-val" id="res2">-</span></div>
+        </div>
+
+        <div class="step" id="step3">
+            <div class="step-header">
+                <h4>Крок 3: Додавання суфікса</h4>
+                <span class="badge waiting" id="badge3">waiting</span>
+            </div>
+            <div class="step-result">Результат кроку: <span class="result-val" id="res3">-</span></div>
+        </div>
+
+        <div class="step" id="step4">
+            <div class="step-header">
+                <h4>Крок 4: Підрахунок символів</h4>
+                <span class="badge waiting" id="badge4">waiting</span>
+            </div>
+            <div class="step-result">Результат кроку: <span class="result-val" id="res4">-</span></div>
+        </div>
+    </div>
+
+    <div class="final-result-container">
+        Фінальний результат: <span class="result-val" id="finalResult">-</span>
+    </div>
+
+    <div class="author-info">Розроблено: Завалій Іван</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

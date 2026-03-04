@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Галерея: Race Condition</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="loader" class="loader-container">
+  <div class="spinner"></div>
+  <p>Завантаження зображень... <span id="loading-progress">0/12</span></p>
+</div>
+
+<div id="app" class="app-container" style="display: none;">
+
+  <div class="controls">
+    <div class="control-group">
+      <span>Режим:</span>
+      <label>
+        <input type="radio" name="mode" value="naive" checked> Naive
+      </label>
+      <label>
+        <input type="radio" name="mode" value="safe"> Safe
+      </label>
+    </div>
+    <div class="control-group delay-info">
+      <span>Симульована підготовка прев'ю:</span>
+      <span class="delay-badge">150–700 ms</span>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="gallery-grid" id="galleryGrid"></div>
+
+    <div class="preview-panel">
+      <div class="preview-header">
+        <h3>Preview</h3>
+        <p id="modeDescription">У Naive-режимі результати застосовуються в порядку їх завершення.</p>
+      </div>
+
+      <div class="preview-image-container">
+        <img id="previewImage" src="" alt="Прев'ю з'явиться тут" style="display: none;">
+        <div id="previewPlaceholder" class="placeholder">Наведіть курсор на мініатюру</div>
+      </div>
+
+      <div class="preview-footer">
+        <span>Поточний hover: <span id="hoverInfo" class="badge">-</span></span>
+        <span>, Токен: <span id="tokenInfo" class="badge">-</span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
