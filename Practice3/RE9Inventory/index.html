@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Resident Evil: Inventory System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="dashboard">
+        <!-- КАТАЛОГ -->
+        <div class="panel">
+            <h2>Каталог предметів</h2>
+            <div class="catalog-controls">
+                <input type="text" id="searchInput" placeholder="Пошук...">
+                <select id="categoryFilter">
+                    <option value="all">Усі</option>
+                    <option value="ammo">Боєприпаси</option>
+                    <option value="heal">Медицина</option>
+                    <option value="resource">Ресурси</option>
+                    <option value="quest">Квестові</option>
+                </select>
+            </div>
+            <div class="items-list" id="catalogList"></div>
+        </div>
+
+        <!-- ІНВЕНТАР -->
+        <div class="panel">
+            <h2>Інвентар</h2>
+            <div class="inv-stats">
+                <div class="stat-box">
+                    <div class="stat-label">Слотів зайнято</div>
+                    <div class="stat-val" id="statCells">0 / 100</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Всього стеків</div>
+                    <div class="stat-val" id="statItems">0</div>
+                </div>
+            </div>
+            <div class="inv-actions">
+                <button class="btn-secondary" id="btnSort">Автосортування</button>
+                <button class="btn-secondary" id="btnClear">Очистити все</button>
+            </div>
+            <div class="grid-container">
+                <div class="grid-bg" id="gridBg"></div>
+                <div class="items-layer" id="itemsLayer"></div>
+            </div>
+            <div class="selected-info" id="selectedInfo">
+                <div>Нічого не вибрано. Клікніть по предмету.</div>
+            </div>
+            <div class="craft-panel" id="craftPanel" style="display: none;">
+                <h3>Система крафту</h3>
+                <div id="craftButtons" style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Підключення скриптів у правильному порядку -->
+    <script src="js/models.js"></script>
+    <script src="js/db.js"></script>
+    <script src="js/Inventory.js"></script>
+    <script src="js/Crafting.js"></script>
+    <script src="js/UIController.js"></script>
+    
+    <script>
+        // Ініціалізація програми
+        const inventoryTracker = new SpatialInventory(10, 10);
+        const craftingSystem = new CraftingSystem(inventoryTracker, RECIPES_DB);
+        const ui = new UIController(inventoryTracker, craftingSystem);
+
+        // Початкові предмети
+        inventoryTracker.addItem(ITEM_DB['scrap'], 1);
+        inventoryTracker.addItem(ITEM_DB['gp_large'], 1);
+        inventoryTracker.addItem(ITEM_DB['herb_g'], 1);
+        ui.renderInventory();
+    </script>
+</body>
+</html>

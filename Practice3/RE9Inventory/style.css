@@ -1,0 +1,308 @@
+/* style.css */
+:root {
+    --bg-color: #0d0d0d;
+    --panel-bg: #161618;
+    --text-color: #e0e0e0;
+    --text-muted: #888888;
+    --accent: #5b79e4;
+    --border: #333333;
+    --slot-bg: #1c1c1f;
+    --slot-border: #2a2a2d;
+    --item-bg: rgba(91, 121, 228, 0.1);
+    --item-border: #444444;
+    --item-hover: rgba(91, 121, 228, 0.25);
+    --item-selected: #00C851;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+    margin: 0;
+}
+
+.dashboard {
+    background-color: var(--panel-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    width: 1100px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+h2, h3 {
+    margin-top: 0;
+    font-weight: bold;
+    color: #fff;
+}
+
+.panel {
+    display: flex;
+    flex-direction: column;
+}
+
+/* КАТАЛОГ */
+.catalog-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.catalog-controls input,
+.catalog-controls select {
+    background: #000;
+    border: 1px solid var(--border);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.catalog-controls input {
+    flex-grow: 1;
+}
+
+.items-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    max-height: 600px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding-right: 10px;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 3px;
+}
+
+.item-card {
+    background: #111;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.catalog-img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    background: #000;
+    border-radius: 4px;
+    padding: 4px;
+    border: 1px solid #222;
+}
+
+.item-info {
+    flex-grow: 1;
+    margin-left: 12px;
+}
+
+.item-title {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 4px;
+    color: #fff;
+}
+
+.item-meta {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.item-actions {
+    margin-top: auto;
+    padding-top: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+input[type="number"] {
+    width: 50px;
+    background: #000;
+    color: #fff;
+    border: 1px solid var(--border);
+}
+
+button {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: 0.2s;
+}
+
+button:hover {
+    filter: brightness(1.2);
+}
+
+button.btn-secondary {
+    background: #2a2a2d;
+    border: 1px solid #444;
+    color: #e0e0e0;
+}
+
+button.btn-secondary:hover {
+    background: #3a3a3d;
+}
+
+/* ІНВЕНТАР */
+.inv-stats {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    background: #111;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+}
+
+.stat-box {
+    flex: 1;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.stat-val {
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.inv-actions {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+/* СІТКА (GRID) */
+.grid-container {
+    position: relative;
+    background: #000;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    width: fit-content;
+    padding: 2px;
+}
+
+.grid-bg {
+    display: grid;
+    grid-template-columns: repeat(10, 45px);
+    grid-template-rows: repeat(10, 45px);
+    gap: 2px;
+}
+
+.grid-cell {
+    background: var(--slot-bg);
+    border: 1px solid var(--slot-border);
+    width: 45px;
+    height: 45px;
+    box-sizing: border-box;
+}
+
+.items-layer {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.inv-item {
+    position: absolute;
+    background: var(--item-bg);
+    border: 1px solid var(--item-border);
+    box-sizing: border-box;
+    pointer-events: auto;
+    cursor: grab;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+.inv-item:active {
+    cursor: grabbing;
+}
+
+.inv-item:hover {
+    background: var(--item-hover);
+    z-index: 10;
+}
+
+.inv-item.selected {
+    border: 2px solid var(--item-selected);
+    background: rgba(0, 200, 81, 0.1);
+    box-shadow: 0 0 10px rgba(0, 200, 81, 0.3);
+    z-index: 10;
+}
+
+.inv-item-img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+.inv-item-qty {
+    position: absolute;
+    bottom: 2px;
+    right: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 1px 1px 2px #000;
+}
+
+/* ІНФО ТА КРАФТ */
+.selected-info {
+    margin-top: 20px;
+    background: #111;
+    border: 1px solid var(--border);
+    padding: 15px;
+    border-radius: 6px;
+    min-height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.craft-panel {
+    margin-top: 15px;
+    background: #0a1f10;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #10b981;
+}
