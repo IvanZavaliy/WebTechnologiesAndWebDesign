@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conference Service — Lobby</title>
+  <meta name="description" content="Create and join conference rooms with real-time chat and video calls" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <a class="navbar-brand" href="/">
+      <div class="logo">🎯</div>
+      <h1>Conference Service</h1>
+    </a>
+    <div class="navbar-status">
+      <span class="status-dot" id="statusDot"></span>
+      <span id="statusText">Online</span>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="lobby-hero">
+    <h2>Welcome to Conference Service</h2>
+    <p>Create a room, invite participants, and start collaborating with real-time chat and video calls.</p>
+  </section>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Create Room Card -->
+    <div class="card" id="createRoomCard">
+      <div class="card-header">
+        <h2>📌 Create New Room</h2>
+      </div>
+      <div class="input-group">
+        <input
+          type="text"
+          id="roomNameInput"
+          placeholder="Enter room name..."
+          maxlength="80"
+          autocomplete="off"
+        />
+        <button class="btn btn-primary" id="createRoomBtn" onclick="createRoom()">
+          ✨ Create
+        </button>
+      </div>
+    </div>
+
+    <!-- Rooms List -->
+    <div class="card" style="margin-top: 24px;" id="roomsListCard">
+      <div class="card-header">
+        <h2>🏠 Available Rooms</h2>
+        <span class="badge" id="roomsCount">0 rooms</span>
+      </div>
+      <div id="roomsList">
+        <div class="loading-overlay" id="roomsLoading">
+          <div class="spinner"></div>
+          <span>Loading rooms...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Join Modal -->
+  <div class="modal-overlay" id="joinModal" style="display:none;">
+    <div class="modal">
+      <h2>👋 Join Room</h2>
+      <p id="joinRoomTitle">Enter your name to join the room.</p>
+      <div class="form-group">
+        <label for="joinNameInput">Your Name</label>
+        <input
+          type="text"
+          id="joinNameInput"
+          placeholder="Enter your display name..."
+          maxlength="40"
+          autocomplete="off"
+        />
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeJoinModal()">Cancel</button>
+        <button class="btn btn-primary" id="joinConfirmBtn" onclick="confirmJoin()">Join</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="js/lobby.js"></script>
+</body>
+</html>

@@ -44,7 +44,7 @@ const ITEM_DB = {
     'scrap': new GameItem('scrap', 'Scrap', 'resource', 1, 1, 1, 'RE_Items_Images/Scrap.png'),
     'empty_bottle': new GameItem('empty_bottle', 'Empty Bottle', 'resource', 1, 1, 1, 'RE_Items_Images/Empty Bottle.png'),
     'empty_injector': new GameItem('empty_injector', 'Empty Injector', 'resource', 1, 1, 1, 'RE_Items_Images/Empty Injector.png'),
-    'infected_blood': new GameItem('infected_blood', 'Infected Blood', 'resource', 1, 1, 1, 'RE_Items_Images/Infected Blood.png'),
+    'infected_blood': new GameItem('infected_blood', 'Infected Blood', 'resource', 1, 1, 100, 'RE_Items_Images/Infected Blood.png'),
 
     // === ГРАНАТИ ===
     'grenade_hand': new GameItem('grenade_hand', 'Hand Grenade', 'weapon', 1, 1, 3, 'RE_Items_Images/Hand Grenade.png'),

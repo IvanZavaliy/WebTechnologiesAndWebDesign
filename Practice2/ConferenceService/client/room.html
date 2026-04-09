@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conference Room</title>
+  <meta name="description" content="Conference room with real-time chat and video calling" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a class="navbar-brand" href="/">
+      <div class="logo">🎯</div>
+      <h1>Conference Service</h1>
+    </a>
+    <div class="navbar-status">
+      <span class="status-dot" id="statusDot"></span>
+      <span id="statusText">Connecting...</span>
+    </div>
+  </nav>
+
+  <!-- Reconnect Banner -->
+  <div class="reconnect-banner" id="reconnectBanner">
+    ⚠️ Connection lost. Reconnecting...
+  </div>
+
+  <!-- Room Layout -->
+  <div class="room-layout">
+    <!-- Room Info Bar -->
+    <div class="room-info-bar">
+      <div class="room-title">
+        <span>🏠</span>
+        <span id="roomName">Loading...</span>
+        <span class="room-status-badge open" id="roomStatusBadge">Active</span>
+      </div>
+      <div class="room-controls">
+        <button class="btn btn-secondary btn-sm" id="closeRoomBtn" onclick="closeRoom()">
+          🔒 Close Room
+        </button>
+        <button class="btn btn-danger btn-sm" id="leaveBtn" onclick="leaveRoom()">
+          🚪 Leave
+        </button>
+      </div>
+    </div>
+
+    <!-- Sidebar (Participants) -->
+    <div class="sidebar">
+      <div class="participants-panel">
+        <div class="panel-header">
+          <span>👥 Participants</span>
+          <span class="badge" id="participantCount">0</span>
+        </div>
+        <div class="participants-list" id="participantsList"></div>
+      </div>
+    </div>
+
+    <!-- Chat Panel -->
+    <div class="chat-panel">
+      <div class="panel-header">💬 Chat</div>
+      <div class="chat-messages" id="chatMessages">
+        <!-- Messages will be rendered here -->
+      </div>
+      <div class="chat-input-area">
+        <input
+          type="text"
+          id="chatInput"
+          placeholder="Type a message..."
+          maxlength="2000"
+          autocomplete="off"
+        />
+        <button class="btn btn-primary" id="sendBtn" onclick="sendMessage()">
+          Send
+        </button>
+      </div>
+    </div>
+
+    <!-- Video Panel -->
+    <div class="video-panel">
+      <div class="panel-header">
+        <span>📹 Video</span>
+      </div>
+      <div class="video-container">
+        <div class="video-box" id="localVideoBox">
+          <video id="localVideo" autoplay muted playsinline></video>
+          <span class="video-label">You</span>
+          <div class="no-video" id="localNoVideo">📷 Camera off</div>
+        </div>
+        <div class="video-box" id="remoteVideoBox">
+          <video id="remoteVideo" autoplay playsinline></video>
+          <span class="video-label">Remote</span>
+          <div class="no-video" id="remoteNoVideo">Waiting for peer...</div>
+        </div>
+      </div>
+      <div class="video-controls">
+        <button class="btn btn-success btn-sm" id="startCallBtn" onclick="startCall()">
+          📞 Start Call
+        </button>
+        <button class="btn btn-danger btn-sm" id="endCallBtn" onclick="endCall()" style="display:none;">
+          📵 End Call
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="js/ws.js"></script>
+  <script src="js/webrtc.js"></script>
+  <script src="js/room.js"></script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+@startuml
+title Online Conference Service — Sequence (REST + WS + optional WebRTC)
+
+actor UserA
+actor UserB
+participant "Browser (A)" as BrowserA
+participant "Browser (B)" as BrowserB
+participant "REST API (Node.js)" as REST
+participant "WebSocket Server (Node.js)" as WS
+database "DB (SQLite/MySQL/Mongo)" as DB
+participant "WebRTC Peer A" as PeerA
+participant "WebRTC Peer B" as PeerB
+
+== 1) Create room (REST) ==
+UserA -> BrowserA : Open Lobby UI
+BrowserA -> REST : POST /rooms {name}
+REST -> DB : INSERT rooms
+DB -> REST : room row
+REST -> BrowserA : 201 {room}
+
+== 2) Join room (REST) ==
+UserA -> BrowserA : Click "Join"
+BrowserA -> REST : POST /rooms/:roomId/join {name}
+REST -> DB : (tx) SELECT room, INSERT participant\n(check room.closed, unique active name)
+DB -> REST : participant row
+REST -> BrowserA : 201 {participant, room}
+
+UserB -> BrowserB : Open Lobby UI
+BrowserB -> REST : POST /rooms/:roomId/join {name}
+REST -> DB : (tx) SELECT room, INSERT participant
+DB -> REST : participant row
+REST -> BrowserB : 201 {participant, room}
+
+== 3) Connect WebSocket for realtime ==
+BrowserA -> WS : WS connect /ws
+BrowserA -> WS : {type: "ws_join", payload: {roomId, participantId}}
+WS -> DB : SELECT active participants (optional)
+DB -> WS : participants[]
+WS -> BrowserA : {type: "participants_list", payload: {items:...}}
+
+BrowserB -> WS : WS connect /ws
+BrowserB -> WS : {type: "ws_join", payload: {roomId, participantId}}
+WS -> DB : SELECT active participants (optional)
+DB -> WS : participants[]
+WS -> BrowserB : {type: "participants_list", payload: {items:...}}
+
+WS -> BrowserA : {type: "user_joined", payload: {participant}}
+note right of WS
+  Broadcast join event to all other clients in the room
+end note
+
+== 4) Load chat history (REST) ==
+BrowserA -> REST : GET /rooms/:roomId/messages?limit=50
+REST -> DB : SELECT last N messages (+ author)
+DB -> REST : messages[]
+REST -> BrowserA : 200 {items:[...]}
+
+BrowserB -> REST : GET /rooms/:roomId/messages?limit=50
+REST -> DB : SELECT last N messages (+ author)
+DB -> REST : messages[]
+REST -> BrowserB : 200 {items:[...]}
+
+== 5) Send chat message (WS -> DB -> Broadcast) ==
+UserA -> BrowserA : Type message + Send
+BrowserA -> WS : {type: "chat_message", payload: {roomId, participantId, text}}
+WS -> DB : INSERT message (validate participant active)
+DB -> WS : message row (+ createdAt)
+WS -> BrowserA : {type: "chat_message", payload: {message}}
+WS -> BrowserB : {type: "chat_message", payload: {message}}
+note right of WS
+  Recommended policy: persist first, then broadcast
+end note
+
+== 6) Close room (REST + WS broadcast) ==
+UserA -> BrowserA : Click "Close room" (host)
+BrowserA -> REST : POST /rooms/:roomId/close
+REST -> DB : UPDATE rooms SET closed=true, closed_at=now()
+DB -> REST : ok
+REST -> WS : notify room closed (internal call/event)
+WS -> BrowserA : {type: "room_closed", payload: {roomId}}
+note left of BrowserA
+  Clients disable chat/join UI and prompt to leave
+end note
+WS -> BrowserB : {type: "room_closed", payload: {roomId}}
+
+== 7) Leave room (REST) + WS presence ==
+UserA -> BrowserA : Click "Leave"
+BrowserA -> REST : POST /rooms/:roomId/leave {participantId}
+REST -> DB : UPDATE participants SET left_at=now()\nWHERE left_at IS NULL
+DB -> REST : ok
+REST -> BrowserA : 204
+BrowserA -> WS : close WS connection
+WS -> BrowserB : {type: "user_left", payload: {participantId}}
+note right of WS
+  Broadcast leave event to remaining clients
+end note
+
+== 8) Delete room (optional; only if no active participants) ==
+UserA -> BrowserA : Click "Delete room"
+BrowserA -> REST : DELETE /rooms/:roomId
+REST -> DB : check active participants\nif none: DELETE room
+DB -> REST : ok / conflict
+REST -> BrowserA : 204 or 409
+
+== 9) Optional WebRTC call setup (signaling via WS) ==
+group WebRTC (optional)
+  UserA -> BrowserA : Click "Start call"
+  BrowserA -> PeerA : getUserMedia(), create RTCPeerConnection
+  PeerA -> PeerA : createOffer()
+  BrowserA -> WS : {type: "webrtc_offer", payload: {to: participantB, from: participantA, sdp}}
+  WS -> BrowserB : {type: "webrtc_offer", payload: {from, sdp}}
+  BrowserB -> PeerB : setRemoteDescription(offer)\ncreateAnswer()
+  BrowserB -> WS : {type: "webrtc_answer", payload: {to: participantA, from: participantB, sdp}}
+  WS -> BrowserA : {type: "webrtc_answer", payload: {from, sdp}}
+  BrowserA -> PeerA : setRemoteDescription(answer)
+  
+  loop ICE candidates (both sides)
+    BrowserA -> WS : {type: "webrtc_ice", payload: {to, from, candidate}}
+    WS -> BrowserB : {type: "webrtc_ice", payload: {from, candidate}}
+    BrowserB -> PeerB : addIceCandidate (buffer if needed)
+    
+    BrowserB -> WS : {type: "webrtc_ice", payload: {to, from, candidate}}
+    WS -> BrowserA : {type: "webrtc_ice", payload: {from, candidate}}
+    BrowserA -> PeerA : addIceCandidate (buffer if needed)
+  end
+  
+  PeerA <-> PeerB : P2P media/data flows (WebRTC)
+  note right of PeerA
+    Media/data are NOT sent via WS.
+    WS is used only for signaling.
+  end note
+end
+@enduml
