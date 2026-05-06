@@ -1,0 +1,36 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title C4. Діаграма компонентів\nСерверний застосунок
+
+Container_Boundary(server_app_boundary, "Серверний застосунок (Node.js + Express)") {
+    
+    Component(routes, "REST-маршрути", "Express Router", "Описують URI, HTTP-методи та точки входу до API.")
+    
+    Component(migrations, "Міграції та початкове наповнення", "Prisma Migrate / Seed", "Створюють схему БД та тестові дані для початкового запуску.")
+    
+    Component(controllers, "Контролери", "TypeScript", "Приймають HTTP-запити, передають їх у сервіси та формують HTTP-відповіді.")
+    
+    Component(validation, "Схеми валідації DTO", "Zod", "Перевіряють коректність вхідних даних для створення, редагування, пошуку та пагінації.")
+    
+    Component(services, "Сервісний шар", "TypeScript", "Інкапсулює прикладну логіку, перевірки, побудову умов запитів і координацію роботи з ORM.")
+    
+    Component(error_handler, "Централізований обробник помилок", "Express Middleware", "Перехоплює винятки та формує уніфікований формат помилок API.")
+    
+    Component(prisma, "Prisma Client", "Prisma ORM", "Надає типобезпечний доступ до таблиць і зв'язків у базі даних.")
+}
+
+ContainerDb(db, "PostgreSQL", "Реляційна база даних", "Зберігає користувачів, підрозділи та службові записи.")
+
+Rel(routes, controllers, "Передають запити")
+
+Rel(controllers, validation, "Використовують для перевірки даних")
+Rel(controllers, services, "Викликають прикладну логіку")
+Rel(controllers, error_handler, "Передають помилки")
+
+Rel(services, prisma, "Працюють із даними через ORM")
+
+Rel(prisma, db, "Читає та змінює дані", "SQL")
+Rel(migrations, db, "Оновлюють структуру та наповнюють даними", "SQL")
+
+@endumlw

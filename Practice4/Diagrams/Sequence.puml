@@ -1,0 +1,25 @@
+@startuml
+title Завантаження списку користувачів
+
+actor Користувач as user
+participant "Сторінка\nUsersListPage" as page
+participant "API-модуль\nusersApi" as api
+participant "HTTP-клієнт\nhttpClient" as client
+participant "REST API\nExpress" as express
+participant "Сервісний шар" as service
+database PostgreSQL as db
+
+user -> page: Відкриває сторінку списку
+page -> api: getUsers(...)
+api -> client: GET /api/users
+client -> express: HTTP-запит
+express -> service: Отримати список користувачів
+service -> db: SELECT ...
+
+db --> service: Дані користувачів
+service --> express: Результат
+express --> client: JSON-відповідь
+client --> api: Дані або нормалізована помилка
+api --> page: Результат запиту
+page --> user: Відображає таблицю
+@enduml
