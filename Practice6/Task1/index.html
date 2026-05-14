@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoring Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="dashboard-header">
+        <h1>Dashboard Сервісів</h1>
+        
+        <div class="dropdown" id="envDropdown">
+            <button class="dropdown-toggle" data-dropdown-toggle>Середовище: Production ▼</button>
+            <div class="dropdown-menu">
+                <span class="dropdown-item" data-value="Production">Production</span>
+                <span class="dropdown-item" data-value="Staging">Staging</span>
+                <span class="dropdown-item" data-value="Development">Development</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="tabs-nav">
+            <button class="tab-btn is-active" data-tab-target="services">Сервіси</button>
+            <button class="tab-btn" data-tab-target="logs">Журнали</button>
+            <button class="tab-btn" data-tab-target="metrics">Метрики</button>
+            <button class="tab-btn" data-tab-target="alerts" disabled data-tooltip="Доступно лише для Admin">Сповіщення</button>
+        </div>
+
+        <div id="services" class="tab-content is-active">
+            <h2>Статус сервісів</h2>
+            <p>База даних: <span class="tooltip-target" data-tooltip="Latency: 12ms. Завантаженість: 45%">ОК</span></p>
+            <p>API шлюз: <span class="tooltip-target" data-tooltip="Запитів: 1500/сек">ОК</span></p>
+            <button class="btn" data-modal-target="incidentModal" style="margin-top: 20px;">Переглянути інциденти</button>
+        </div>
+
+        <div id="logs" class="tab-content">
+            <h2>Останні події</h2>
+            <div class="accordion">
+                <div class="accordion-item">
+                    <div class="accordion-header"><span>[10:45] Попередження пам'яті</span><span>+</span></div>
+                    <div class="accordion-content">
+                        <div class="accordion-inner">Споживання пам'яті сервісом auth-service перевищило 80%. Рекомендується масштабування.</div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header"><span>[09:12] Успішний бекап БД</span><span>+</span></div>
+                    <div class="accordion-content">
+                        <div class="accordion-inner">Резервне копіювання бази даних users_db успішно завершено. Розмір: 4.2GB.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="metrics" class="tab-content">
+            <h2>Системні метрики</h2>
+            <p>Дані графіків (симуляція)...</p>
+        </div>
+        
+        <div id="alerts" class="tab-content">
+            </div>
+
+        <div id="tabError" class="error-message">Помилка: Ця вкладка зараз недоступна.</div>
+    </main>
+
+    <div class="modal-overlay" id="incidentModal">
+        <div class="modal-content">
+            <button class="modal-close" data-modal-close>&times;</button>
+            <h2>Деталі інциденту #402</h2>
+            <p><strong>Статус:</strong> <span style="color: var(--error)">Відкритий</span></p>
+            <p>Відбулося падіння сервісу платежів о 03:00. Інженери вже працюють над відновленням.</p>
+            <button class="btn" data-modal-close style="margin-top: 15px;">Закрити</button>
+        </div>
+    </div>
+
+    <div id="tooltipContainer"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

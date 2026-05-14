@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG Моніторинг Сервісів</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <h2>Панель керування</h2>
+            
+            <div id="infoPanel" class="card is-hidden">
+                <h3>Вибраний сервіс: <span id="serviceName">Немає</span></h3>
+                <p>Статус: <strong id="serviceStatus">-</strong></p>
+                <div class="actions">
+                    <button id="btnSetWorking" class="btn btn-success">Працює</button>
+                    <button id="btnSetWarning" class="btn btn-warning">Попередження</button>
+                    <button id="btnSetError" class="btn btn-error">Помилка</button>
+                </div>
+            </div>
+
+            <div class="global-actions card">
+                <h3>Системні дії</h3>
+                <button id="btnPing" class="btn btn-primary">Запустити Ping-тест</button>
+                <div id="animStatus" class="status-indicator">Стан: Очікування</div>
+            </div>
+
+            <div id="toast" class="toast">Повідомлення</div>
+        </aside>
+
+        <main class="canvas-container">
+            <svg id="svgCanvas" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+                <g id="connectionsLayer"></g>
+                <g id="nodesLayer"></g>
+                <g id="animLayer"></g>
+            </svg>
+            <div id="tooltip" class="tooltip">Підказка</div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

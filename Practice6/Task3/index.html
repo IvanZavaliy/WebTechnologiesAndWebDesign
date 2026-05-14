@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensor Analytics Canvas</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Візуалізація Сенсорних Даних</h1>
+            <p class="subtitle">Інтерактивна Canvas-панель для моніторингу температури та вологості</p>
+        </header>
+
+        <main>
+            <aside class="sidebar">
+                <div class="panel state-panel">
+                    <h2>Стан Системи</h2>
+                    <div class="status-indicator">
+                        <span id="status-dot" class="dot initial"></span>
+                        <span id="status-text">Ініціалізація</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>Кількість сенсорів:</span>
+                        <span id="obj-count">0</span>
+                    </div>
+                    <div class="error-box" id="error-box"></div>
+                </div>
+
+                <div class="panel controls-panel">
+                    <h2>Керування Анімацією</h2>
+                    <div class="btn-group">
+                        <button id="btn-start" class="btn primary">Запустити</button>
+                        <button id="btn-pause" class="btn secondary">Пауза</button>
+                    </div>
+                    
+                    <h2 class="mt-4">Додавання Об'єктів</h2>
+                    <button id="btn-add-temp" class="btn outline temp-btn">Додати Температуру</button>
+                    <button id="btn-add-hum" class="btn outline hum-btn">Додати Вологість</button>
+                </div>
+
+                <div class="panel properties-panel" id="properties-panel" style="display:none;">
+                    <h2>Властивості Сенсора</h2>
+                    <div class="prop-row">
+                        <label>Тип:</label>
+                        <span id="prop-type" class="badge">-</span>
+                    </div>
+                    <div class="prop-row">
+                        <label>Стан:</label>
+                        <button id="btn-toggle-active" class="btn outline small-btn">Вимкнути</button>
+                    </div>
+                    <div class="prop-row range-row">
+                        <label>Швидкість (X): <span id="val-vx">0</span></label>
+                        <input type="range" id="prop-vx" min="-5" max="5" step="0.5">
+                    </div>
+                    <div class="prop-row range-row">
+                        <label>Швидкість (Y): <span id="val-vy">0</span></label>
+                        <input type="range" id="prop-vy" min="-5" max="5" step="0.5">
+                    </div>
+                    <button id="btn-delete" class="btn danger mt-2">Видалити об'єкт</button>
+                </div>
+            </aside>
+
+            <section class="canvas-container">
+                <canvas id="main-canvas" width="800" height="600">
+                    Ваш браузер не підтримує елемент canvas.
+                </canvas>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

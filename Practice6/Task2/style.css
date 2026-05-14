@@ -1,0 +1,162 @@
+:root {
+    --bg-color: #f1f5f9;
+    --card-bg: #ffffff;
+    --text-color: #1e293b;
+    --border-color: #cbd5e1;
+    --color-working: #22c55e;
+    --color-warning: #eab308;
+    --color-error: #ef4444;
+    --color-primary: #3b82f6;
+    --color-line: #94a3b8;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
+}
+
+.dashboard {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+/* HTML-компоненти (Анімація через opacity та transform) */
+.sidebar {
+    width: 320px;
+    padding: 20px;
+    background: var(--card-bg);
+    border-right: 1px solid var(--border-color);
+    box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 10;
+}
+
+.card {
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: all 0.3s ease; /* Плавні переходи для карток */
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.card.is-hidden {
+    opacity: 0.3;
+    pointer-events: none;
+    transform: translateY(-10px);
+}
+
+.btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    transition: filter 0.2s;
+    margin-bottom: 5px;
+    width: 100%;
+}
+.btn:hover { filter: brightness(0.9); }
+.btn-success { background: var(--color-working); }
+.btn-warning { background: var(--color-warning); }
+.btn-error { background: var(--color-error); }
+.btn-primary { background: var(--color-primary); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: var(--color-error);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
+}
+.toast.is-active { opacity: 1; transform: translateY(0); }
+.toast.success { background: var(--color-working); }
+
+/* SVG-контейнер */
+.canvas-container {
+    flex-grow: 1;
+    position: relative;
+    background: radial-gradient(circle, #ffffff 0%, #e2e8f0 100%);
+}
+
+svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.tooltip {
+    position: absolute;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.tooltip.is-visible { opacity: 1; }
+
+/* SVG-елементи (Анімація через CSS @keyframes та зміну атрибутів) */
+.node { cursor: pointer; transition: transform 0.2s; }
+.node:hover .node-bg { stroke-width: 4px; filter: brightness(1.1); }
+.node.is-selected .node-bg { stroke: var(--color-primary); stroke-width: 6px; }
+
+/* Стан: Працює */
+.node.status-working .node-bg { fill: var(--color-working); }
+
+/* Стан: Попередження */
+.node.status-warning .node-bg { fill: var(--color-warning); }
+.node.status-warning .node-bg { animation: blinkWarning 2s infinite alternate; }
+
+/* Стан: Помилка */
+.node.status-error .node-bg { fill: var(--color-error); }
+.node.status-error .pulse-ring { 
+    animation: pulseError 1.5s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+    transform-origin: center;
+}
+
+.connection-line {
+    stroke: var(--color-line);
+    stroke-width: 3;
+    fill: none;
+    transition: stroke 0.3s;
+}
+.connection-line.is-active {
+    stroke: var(--color-primary);
+    stroke-dasharray: 10;
+    animation: dashMove 1s linear infinite;
+}
+
+/* @keyframes для сценарних ефектів SVG */
+@keyframes pulseError {
+    0% { r: 30; opacity: 0.8; stroke-width: 2; }
+    100% { r: 60; opacity: 0; stroke-width: 10; stroke: var(--color-error); }
+}
+
+@keyframes blinkWarning {
+    0% { fill: #fef08a; }
+    100% { fill: var(--color-warning); }
+}
+
+@keyframes dashMove {
+    to { stroke-dashoffset: -20; }
+}
