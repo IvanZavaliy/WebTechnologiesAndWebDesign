@@ -1,0 +1,32 @@
+@startuml
+title Потік даних у клієнтському застосунку
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultTextAlignment center
+
+skinparam rectangle {
+    BackgroundColor #F4F5F7
+    BorderColor #A6A9B6
+    RoundCorner 5
+}
+
+actor "Користувач" as user
+rectangle "UI-компоненти" as ui
+rectangle "Контейнер / сторінка" as container
+rectangle "Стан застосунку\n(Context / Reducer / Hook)" as state
+rectangle "API-модуль" as api
+rectangle "REST API сервер" as server
+
+user -down-> ui : взаємодія
+ui -down-> container : подія / callback
+container -down-> state : зміна стану\nабо dispatch(action)
+state -up-> ui : оновлені дані\nі статуси
+
+state -down-> api : запит до сервера
+api -up-> state : дані / помилка
+
+api -down-> server : HTTP-запит
+server -up-> api : HTTP-відповідь
+
+@enduml

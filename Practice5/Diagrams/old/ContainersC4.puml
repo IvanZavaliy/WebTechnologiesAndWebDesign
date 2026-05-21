@@ -1,0 +1,24 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title C4. Діаграма контейнерів\nЗастосунок керування користувачами
+
+Person(user, "Користувач", "Працює з вебінтерфейсом системи")
+
+System_Boundary(system, "Система керування користувачами") {
+    
+    Container(web_app, "Клієнтський вебзастосунок", "React + TypeScript + Vite", "Надає інтерфейс для перегляду, створення, редагування та видалення записів користувачів. Побудований на ES-модулях і модульній файловій структурі.")
+    
+    Container(server_app, "Серверний застосунок", "Node.js + Express", "Реалізує REST API, прикладну логіку, серверну валідацію та централізовану обробку помилок.")
+    
+    Container(data_access, "Рівень доступу до даних", "Prisma ORM", "Інкапсулює доступ до PostgreSQL, забезпечує типобезпечні запити, міграції та початкове наповнення.")
+    
+    ContainerDb(db, "Реляційна база даних", "PostgreSQL", "Зберігає користувачів, підрозділи та службові дані.")
+}
+
+Rel(user, web_app, "Працює через браузер")
+Rel(web_app, server_app, "Надсилає запити та отримує відповіді", "HTTP(S) / JSON")
+Rel(server_app, data_access, "Використовує для роботи з даними")
+Rel(data_access, db, "Читає та змінює дані", "SQL")
+
+@enduml

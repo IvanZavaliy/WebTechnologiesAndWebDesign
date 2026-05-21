@@ -1,0 +1,58 @@
+@startuml DatabaseER
+
+!theme plain
+skinparam linetype ortho
+skinparam roundcorner 8
+skinparam shadowing false
+
+skinparam class {
+  BackgroundColor #E3F2FD
+  BorderColor #1565C0
+  ArrowColor #1565C0
+  FontColor #0D47A1
+  HeaderBackgroundColor #1565C0
+  HeaderFontColor #FFFFFF
+  StereotypeFontColor #1565C0
+}
+
+title UML-діаграма бази даних\nСистема керування користувачами
+
+package "PostgreSQL — user_management" {
+
+  entity "departments" as dept {
+    * **id** : INTEGER <<PK, AUTOINCREMENT>>
+    --
+    * name : VARCHAR <<UNIQUE>>
+  }
+
+  entity "users" as usr {
+    * **id** : INTEGER <<PK, AUTOINCREMENT>>
+    --
+    * first_name : VARCHAR
+    * last_name : VARCHAR
+    * email : VARCHAR <<UNIQUE>>
+    phone : VARCHAR [nullable]
+    * department_id : INTEGER <<FK>>
+    * created_at : TIMESTAMP <<DEFAULT now()>>
+    * updated_at : TIMESTAMP <<AUTO>>
+  }
+
+}
+
+usr }o--|| dept : "department_id → departments.id\n(Many-to-One)"
+
+note bottom of usr
+  Таблиця зберігає записи
+  користувачів системи.
+  Кожен користувач належить
+  рівно одному відділу.
+end note
+
+note bottom of dept
+  Довідник відділів
+  організації.
+  Один відділ може мати
+  багато користувачів.
+end note
+
+@enduml
